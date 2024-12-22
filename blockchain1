@@ -1,0 +1,31 @@
+BLOCKCHAIN
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+
+contract AssetOwnership is ERC721URIStorage {
+    uint256 public tokenCounter;
+
+    constructor() ERC721("AssetOwnership", "ASSET") {
+        tokenCounter = 0;
+    }
+
+    function createAsset(string memory tokenURI) public returns (uint256) {
+        uint256 newTokenId = tokenCounter;
+        _safeMint(msg.sender, newTokenId);
+        _setTokenURI(newTokenId, tokenURI);
+        tokenCounter++;
+        return newTokenId;
+    }
+    
+    function transferAsset(address to, uint256 tokenId) public {
+        safeTransferFrom(msg.sender, to, tokenId);
+    }
+}
+QR CODE
+var qr = new QRCode(document.getElementById("qrcode"), {
+  text: "https://yourapp.com/asset/123",  // Use the tokenURI link
+  width: 128,
+  height: 128
+});
